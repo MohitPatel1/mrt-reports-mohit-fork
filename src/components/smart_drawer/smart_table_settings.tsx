@@ -1,8 +1,7 @@
-import * as React from 'react';
+import { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import Paper from '@mui/material/Paper';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
@@ -24,9 +23,13 @@ const drawerWidth = 300;
 
 type SettingsPosition = 'left-drawer' | 'right-drawer' | 'bottom' | 'top' | 'floating';
 
-export interface SmartTableSettingsProps<TData extends Record<string, any>> {
+type SmartTableSettings = {
   position?: SettingsPosition;
+}
+
+export interface SmartTableSettingsProps<TData extends Record<string, any>> {
   table: MRT_TableInstance<TData>;
+  tableSettings: SmartTableSettings;
 }
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -55,11 +58,12 @@ const StyledAppBar = styled(AppBar, {
 }));
 
 export const SmartTableSettings = <TData extends Record<string, any>>({
-  position = 'right-drawer',
   table,
+  tableSettings,
 }: SmartTableSettingsProps<TData>): JSX.Element => {
-  const [open, setOpen] = React.useState(false);
-  const [activePanel, setActivePanel] = React.useState<string | null>(null);
+  const { position = 'right-drawer' } = tableSettings;
+  const [open, setOpen] = useState(false);
+  const [activePanel, setActivePanel] = useState<string | null>(null);
 
   const handleDrawerOpen = () => {
     setOpen(true);

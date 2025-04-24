@@ -25,12 +25,18 @@ type SmartReportProps<T extends MRT_RowData> = {
 
 export const SmartReport = <T extends MRT_RowData>({tableProps, tableSettings}:SmartReportProps<T>) => {
 
-  const tableInstance = useMaterialReactTable<T>(tableProps);
+  const tableInstance = useMaterialReactTable<T>({
+    globalFilterModeOptions: ['fuzzy', 'startsWith'],
+    ...tableProps
+  });
   
   return <Stack direction="row" spacing={1}>
     <SmartTableSettings
-      position="left-drawer"
       table={tableInstance}
+      tableSettings={{
+        position: 'left-drawer',
+        ...tableSettings
+      }}
     />
       <SmartReportMRT table={tableInstance} />
   </Stack>;
