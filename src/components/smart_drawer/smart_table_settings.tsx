@@ -15,19 +15,10 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import SortIcon from '@mui/icons-material/Sort';
-import GroupWorkIcon from '@mui/icons-material/GroupWork';
 import SearchIcon from '@mui/icons-material/Search';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import { MaterialReactTableProps, MRT_ColumnFiltersState, MRT_SortingState, MRT_GroupingState, MRT_VisibilityState } from 'material-react-table';
+import { MRT_TableInstance } from 'material-react-table';
 
 import { SearchPanel } from './search_panel';
-import { FilterPanel } from './filter_panel';
-import { SortPanel } from './sort_panel';
-import { GroupPanel } from './group_panel';
-import { ColumnVisibilityPanel } from './column_visibility_panel';
-import { TableState } from '../smart_report/smart_report';
 
 const drawerWidth = 300;
 
@@ -35,23 +26,8 @@ type SettingsPosition = 'left-drawer' | 'right-drawer' | 'bottom' | 'top' | 'flo
 
 export interface SmartTableSettingsProps<TData extends Record<string, any>> {
   position?: SettingsPosition;
-  onSearch?: (searchTerm: string) => void;
-  onFilter?: (filters: MRT_ColumnFiltersState) => void;
-  onSort?: (sortBy: MRT_SortingState) => void;
-  onGroup?: (groupBy: MRT_GroupingState) => void;
-  onColumnVisibilityChange?: (columnVisibility: MRT_VisibilityState) => void;
-  tableInstance?: MaterialReactTableProps<TData>;
-  tableState: TableState;
+  table: MRT_TableInstance<TData>;
 }
-
-const FloatingContainer = styled(Paper)(({ theme }) => ({
-  position: 'fixed',
-  right: theme.spacing(2),
-  top: theme.spacing(2),
-  zIndex: theme.zIndex.drawer + 1,
-  borderRadius: theme.shape.borderRadius,
-  boxShadow: theme.shadows[4],
-}));
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -80,13 +56,7 @@ const StyledAppBar = styled(AppBar, {
 
 export const SmartTableSettings = <TData extends Record<string, any>>({
   position = 'right-drawer',
-  onSearch,
-  onFilter,
-  onSort,
-  onGroup,
-  onColumnVisibilityChange,
-  tableInstance,
-  tableState,
+  table,
 }: SmartTableSettingsProps<TData>): JSX.Element => {
   const [open, setOpen] = React.useState(false);
   const [activePanel, setActivePanel] = React.useState<string | null>(null);
@@ -104,15 +74,16 @@ export const SmartTableSettings = <TData extends Record<string, any>>({
     setActivePanel(activePanel === panelName ? null : panelName);
   };
 
+  const onSearch = (searchTerm: string) => {
+    table.setGlobalFilter(searchTerm);
+  };
+
   const settingsContent = (
-    <>
       <List>
         <ListItem>
           <Typography variant="h6">Table Settings</Typography>
         </ListItem>
         <Divider />
-        {onSearch && (
-          <>
             <ListItem>
               <ListItemButton onClick={() => handlePanelClick('search')}>
                 <ListItemIcon>
@@ -122,115 +93,11 @@ export const SmartTableSettings = <TData extends Record<string, any>>({
               </ListItemButton>
             </ListItem>
             <SearchPanel
-              onSearch={onSearch}
               open={activePanel === 'search'}
-              initialValue={tableState.searchTerm}
+              onSearch={onSearch}
             />
-          </>
-        )}
-
-        {onFilter && tableInstance?.columns && (
-          <>
-            <ListItem>
-              <ListItemButton onClick={() => handlePanelClick('filter')}>
-                <ListItemIcon>
-                  <FilterListIcon />
-                </ListItemIcon>
-                <ListItemText primary="Filter" />
-              </ListItemButton>
-            </ListItem>
-            <FilterPanel
-              columns={tableInstance.columns}
-              onFilter={onFilter}
-              open={activePanel === 'filter'}
-              initialFilters={tableState.filters}
-            />
-          </>
-        )}
-
-        {onSort && tableInstance?.columns && (
-          <>
-            <ListItem>
-              <ListItemButton onClick={() => handlePanelClick('sort')}>
-                <ListItemIcon>
-                  <SortIcon />
-                </ListItemIcon>
-                <ListItemText primary="Sort" />
-              </ListItemButton>
-            </ListItem>
-            <SortPanel
-              columns={tableInstance.columns}
-              onSort={onSort}
-              open={activePanel === 'sort'}
-              initialSortBy={tableState.sortBy}
-            />
-          </>
-        )}
-
-        {onGroup && tableInstance?.columns && (
-          <>
-            <ListItem>
-              <ListItemButton onClick={() => handlePanelClick('group')}>
-                <ListItemIcon>
-                  <GroupWorkIcon />
-                </ListItemIcon>
-                <ListItemText primary="Group" />
-              </ListItemButton>
-            </ListItem>
-            <GroupPanel
-              columns={tableInstance.columns}
-              onGroup={onGroup}
-              open={activePanel === 'group'}
-              initialGroupBy={tableState.groupBy}
-            />
-          </>
-        )}
-
-        {onColumnVisibilityChange && tableInstance?.columns && (
-          <>
-            <ListItem>
-              <ListItemButton onClick={() => handlePanelClick('columnVisibility')}>
-                <ListItemIcon>
-                  <VisibilityIcon />
-                </ListItemIcon>
-                <ListItemText primary="Column Visibility" />
-              </ListItemButton>
-            </ListItem>
-            <ColumnVisibilityPanel
-              columns={tableInstance.columns}
-              onColumnVisibilityChange={onColumnVisibilityChange}
-              open={activePanel === 'columnVisibility'}
-            />
-          </>
-        )}
       </List>
-    </>
   );
-
-  if (position === 'floating') {
-    return (
-      <FloatingContainer>
-        <IconButton onClick={handleDrawerOpen} sx={{ m: 1 }}>
-          <TuneIcon />
-        </IconButton>
-        <Drawer
-          anchor="right"
-          open={open}
-          onClose={handleDrawerClose}
-          PaperProps={{
-            sx: { width: drawerWidth }
-          }}
-        >
-          <DrawerHeader>
-            <IconButton onClick={handleDrawerClose}>
-              <CloseIcon />
-            </IconButton>
-          </DrawerHeader>
-          {settingsContent}
-        </Drawer>
-      </FloatingContainer>
-    );
-  }
 
   if (position === 'top' || position === 'bottom') {
     return (

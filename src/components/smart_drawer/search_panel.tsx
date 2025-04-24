@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import { Collapse, TextField } from '@mui/material';
 
 export interface SearchPanelProps {
@@ -12,7 +12,7 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({
   open,
   initialValue = '',
 }) => {
-  const [searchTerm, setSearchTerm] = React.useState(initialValue);
+  const [searchTerm, setSearchTerm] = useState(initialValue);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
