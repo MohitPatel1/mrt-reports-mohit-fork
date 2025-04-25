@@ -8,9 +8,8 @@ const meta = {
 } satisfies Meta<typeof SmartReport>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {
+export const Primary = {
   args: {
     tableProps: {
       columns: [

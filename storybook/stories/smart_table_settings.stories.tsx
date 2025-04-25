@@ -1,9 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta } from "@storybook/react";
 // Use a local mock instead of importing from @teziapp/smartreport
 import { SmartTableSettings } from "@teziapp/smartreport";
 import { MRT_TableInstance } from 'material-react-table';
-import React from 'react';
-
 // Sample table data and columns for demonstration
 const sampleColumns = [
   {
@@ -55,10 +53,9 @@ const meta = {
 } satisfies Meta<typeof SmartTableSettings>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
 // Base story with all features enabled
-export const AllFeatures: Story = {
+export const AllFeatures = {
   args: {
     table: mockTableInstance,
     tableSettings: {
@@ -68,7 +65,7 @@ export const AllFeatures: Story = {
 };
 
 // Different position variants
-export const LeftDrawer: Story = {
+export const LeftDrawer = {
   args: {
     table: mockTableInstance,
     tableSettings: {
@@ -77,7 +74,7 @@ export const LeftDrawer: Story = {
   },
 };
 
-export const RightDrawer: Story = {
+export const RightDrawer = {
   args: {
     table: mockTableInstance,
     tableSettings: {
@@ -86,7 +83,7 @@ export const RightDrawer: Story = {
   },
 };
 
-export const TopBar: Story = {
+export const TopBar = {
   args: {
     table: mockTableInstance,
     tableSettings: {
@@ -95,7 +92,7 @@ export const TopBar: Story = {
   },
 };
 
-export const BottomBar: Story = {
+export const BottomBar = {
   args: {
     table: mockTableInstance,
     tableSettings: {
