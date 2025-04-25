@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { SmartReportMRT } from "@teziapp/smartreport";
+import { SmartMRT } from "@teziapp/smartreport";
 
 const meta = {
-  title: "Example/SmartReportMRT",
-  component: SmartReportMRT,
+  title: "Example/SmartMRT",
+  component: SmartMRT,
   tags: ["docsPage"]
-} satisfies Meta<typeof SmartReportMRT>;
+} satisfies Meta<typeof SmartMRT>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

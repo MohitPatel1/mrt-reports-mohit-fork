@@ -3,7 +3,7 @@ import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import { Button } from "@mui/material";
 import { MaterialReactTable, MaterialReactTableProps, MRT_RowData } from "material-react-table";
 import { useState } from "react";
-import "./smart_report_mrt.css";
+import "./smart_mrt.css";
 import { FaFilePdf } from 'react-icons/fa';
 
 /*
@@ -12,7 +12,8 @@ import { FaFilePdf } from 'react-icons/fa';
   - Show columns that have `showInCardView` set to true in card view.
   - When user toggles visibility of a column in card view, update the `showInCardView` field.
 */
-export const SmartReportMRT = <T extends MRT_RowData>(props: MaterialReactTableProps<T>) => {
+export const SmartMRT = <T extends MRT_RowData>(props: MaterialReactTableProps<T>) => {
+  console.log({props})
   // State to control the view mode override. Default to table view on desktop & card view on mobile.
   const [forceTableView, setForceTableView] = useState(window.innerWidth >= 500);
   return (
@@ -22,7 +23,7 @@ export const SmartReportMRT = <T extends MRT_RowData>(props: MaterialReactTableP
         // Conditionally add the 'force-table-view' class
         className: `responsive-card-table ${forceTableView ? 'force-table-view' : ''}`,
         sx: {
-          maxWidth: forceTableView ? '100%' : '500px',
+          maxWidth: forceTableView ? '100%' : '500px',            
         }
       }}
       // Add props to the table body cells (<td>)
@@ -32,7 +33,7 @@ export const SmartReportMRT = <T extends MRT_RowData>(props: MaterialReactTableP
       })}
       renderTopToolbar = {() => (
         <div className="top-toolbar">
-          <Button 
+          <Button
             onClick={() => setForceTableView(!forceTableView)}
             startIcon={forceTableView ? <ViewModuleIcon /> : <TableViewIcon />}
           >
