@@ -64,7 +64,7 @@ const App = () => {
       </TabPanel>
 
       <TabPanel value={currentTab} index={2}>
-        {/* <SmartTableSettings /> */}
+        <SmartTableSettings />
       </TabPanel>
     </Box>
   </TableContextProvider>

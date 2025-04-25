@@ -17,7 +17,6 @@ import ListItemText from '@mui/material/ListItemText';
 import SearchIcon from '@mui/icons-material/Search';
 import { MRT_TableInstance, MRT_RowData } from 'material-react-table';
 import { useTableContext } from '../../TableContextProvider';
-
 import { SearchPanel } from './search_panel';
 
 const drawerWidth = 300;
@@ -27,9 +26,8 @@ type SettingsPosition = 'left-drawer' | 'right-drawer' | 'bottom' | 'top' | 'flo
 export type SmartTableSettings = {
   position?: SettingsPosition;
 }
-
 export interface SmartTableSettingsProps<TData extends MRT_RowData> {
-  tableSettings: SmartTableSettings;
+  tableSettings?: SmartTableSettings;
   table?: MRT_TableInstance<TData>; // Make table optional since we can get it from context
 }
 
@@ -62,7 +60,7 @@ export const SmartTableSettings = <TData extends MRT_RowData>({
   tableSettings,
   table: tableProp
 }: SmartTableSettingsProps<TData>): JSX.Element => {
-  const { position = 'right-drawer' } = tableSettings;
+  const { position = 'left-drawer' } = tableSettings || {};
   const [open, setOpen] = useState(false);
   const [activePanel, setActivePanel] = useState<string | null>(null);
 
