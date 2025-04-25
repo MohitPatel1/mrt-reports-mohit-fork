@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -15,7 +15,8 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import SearchIcon from '@mui/icons-material/Search';
-import { MRT_TableInstance } from 'material-react-table';
+import { MRT_TableInstance, MRT_RowData } from 'material-react-table';
+import { useTableContext } from '../../TableContextProvider';
 
 import { SearchPanel } from './search_panel';
 
@@ -23,13 +24,13 @@ const drawerWidth = 300;
 
 type SettingsPosition = 'left-drawer' | 'right-drawer' | 'bottom' | 'top' | 'floating';
 
-type SmartTableSettings = {
+export type SmartTableSettings = {
   position?: SettingsPosition;
 }
 
-export interface SmartTableSettingsProps<TData extends Record<string, any>> {
-  table: MRT_TableInstance<TData>;
+export interface SmartTableSettingsProps<TData extends MRT_RowData> {
   tableSettings: SmartTableSettings;
+  table?: MRT_TableInstance<TData>; // Make table optional since we can get it from context
 }
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -57,13 +58,17 @@ const StyledAppBar = styled(AppBar, {
   }),
 }));
 
-export const SmartTableSettings = <TData extends Record<string, any>>({
-  table,
+export const SmartTableSettings = <TData extends MRT_RowData>({
   tableSettings,
+  table: tableProp
 }: SmartTableSettingsProps<TData>): JSX.Element => {
   const { position = 'right-drawer' } = tableSettings;
   const [open, setOpen] = useState(false);
   const [activePanel, setActivePanel] = useState<string | null>(null);
+
+  // Use provided table or get from context
+  const contextTable = useTableContext<TData>();
+  const table = tableProp || contextTable;
 
   const handleDrawerOpen = () => {
     setOpen(true);

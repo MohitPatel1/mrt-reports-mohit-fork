@@ -5,6 +5,7 @@ import { MaterialReactTable, MaterialReactTableProps, MRT_RowData } from "materi
 import { useState } from "react";
 import "./smart_mrt.css";
 import { FaFilePdf } from 'react-icons/fa';
+import { useTableContext } from '../../TableContextProvider';
 
 /*
   TODO: (Responsive Card View)
@@ -12,10 +13,13 @@ import { FaFilePdf } from 'react-icons/fa';
   - Show columns that have `showInCardView` set to true in card view.
   - When user toggles visibility of a column in card view, update the `showInCardView` field.
 */
-export const SmartMRT = <T extends MRT_RowData>(props: MaterialReactTableProps<T>) => {
-  console.log({props})
+export const SmartMRT = () => {
+  // Get table instance from context
+  const table = useTableContext();
+  
   // State to control the view mode override. Default to table view on desktop & card view on mobile.
   const [forceTableView, setForceTableView] = useState(window.innerWidth >= 500);
+  
   return (
     <MaterialReactTable
       // Add props to the main table element (<table>)
@@ -45,7 +49,17 @@ export const SmartMRT = <T extends MRT_RowData>(props: MaterialReactTableProps<T
         </div>
       )}
       
-      {...props}
+      // Use table instance from context instead of props
+      state={table.getState()}
+      columns={table.options.columns}
+      data={table.options.data}
+      enableColumnFilters={table.options.enableColumnFilters}
+      enableGlobalFilter={table.options.enableGlobalFilter}
+      enableColumnOrdering={table.options.enableColumnOrdering}
+      enableGrouping={table.options.enableGrouping}
+      enablePagination={table.options.enablePagination}
+      enableSorting={table.options.enableSorting}
+      // Add more table props as needed
     />
   );
 };
