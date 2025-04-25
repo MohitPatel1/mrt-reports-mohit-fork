@@ -37,6 +37,7 @@ const App = () => {
 
   return (
     <TableContextProvider tableProps={{
+      //@ts-ignore
       columns: sampleColumns,
       data: sampleData,
     }}>
@@ -55,6 +56,7 @@ const App = () => {
       <TabPanel value={currentTab} index={1}>
         <SmartReport
           tableProps={{
+            //@ts-ignore
             columns: sampleColumns,
             data: sampleData,
           }}
