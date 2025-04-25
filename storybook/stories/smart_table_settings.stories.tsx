@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { SmartTableSettings } from "./smart_table_settings";
+// Use a local mock instead of importing from @teziapp/smartreport
+import { SmartTableSettings } from "@teziapp/smartreport";
+import { MRT_TableInstance } from 'material-react-table';
+import React from 'react';
 
 // Sample table data and columns for demonstration
 const sampleColumns = [
@@ -27,17 +30,15 @@ const sampleData = [
   { id: 3, name: 'Bob Johnson', email: 'bob@example.com', role: 'Editor' },
 ];
 
-const defaultTableState = {
-  searchTerm: '',
-  filters: [],
-  sortBy: [],
-  groupBy: [],
-  columnVisibility: {},
-  pagination: {
-    pageIndex: 0,
-    pageSize: 10,
-  },
-};
+// Mock MRT_TableInstance for Storybook
+const mockTableInstance = {
+  getState: () => ({
+    globalFilter: '',
+  }),
+  setGlobalFilter: () => {},
+  columns: sampleColumns,
+  data: sampleData,
+} as unknown as MRT_TableInstance<Record<string, any>>;
 
 const meta = {
   title: "Components/SmartTableSettings",
@@ -51,21 +52,6 @@ const meta = {
       },
     },
   },
-  argTypes: {
-    position: {
-      control: 'select',
-      options: ['left-drawer', 'right-drawer', 'top', 'bottom', 'floating'],
-      description: 'Position of the settings panel',
-      table: {
-        defaultValue: { summary: 'right-drawer' },
-      },
-    },
-    onSearch: { action: 'search' },
-    onFilter: { action: 'filter' },
-    onSort: { action: 'sort' },
-    onGroup: { action: 'group' },
-    onColumnVisibilityChange: { action: 'columnVisibility' },
-  },
 } satisfies Meta<typeof SmartTableSettings>;
 
 export default meta;
@@ -74,40 +60,46 @@ type Story = StoryObj<typeof meta>;
 // Base story with all features enabled
 export const AllFeatures: Story = {
   args: {
-    position: "right-drawer",
-    tableInstance: {
-      columns: sampleColumns,
-      data: sampleData,
+    table: mockTableInstance,
+    tableSettings: {
+      position: "right-drawer",
     },
-    tableState: defaultTableState,
   },
 };
 
 // Different position variants
 export const LeftDrawer: Story = {
   args: {
-    ...AllFeatures.args,
-    position: "left-drawer",
+    table: mockTableInstance,
+    tableSettings: {
+      position: "left-drawer",
+    },
   },
 };
 
 export const RightDrawer: Story = {
   args: {
-    ...AllFeatures.args,
-    position: "right-drawer",
+    table: mockTableInstance,
+    tableSettings: {
+      position: "right-drawer",
+    },
   },
 };
 
 export const TopBar: Story = {
   args: {
-    ...AllFeatures.args,
-    position: "top",
+    table: mockTableInstance,
+    tableSettings: {
+      position: "top",
+    },
   },
 };
 
 export const BottomBar: Story = {
   args: {
-    ...AllFeatures.args,
-    position: "bottom",
+    table: mockTableInstance,
+    tableSettings: {
+      position: "bottom",
+    },
   },
 };

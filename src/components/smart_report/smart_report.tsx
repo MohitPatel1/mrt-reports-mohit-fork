@@ -1,8 +1,6 @@
 import { MaterialReactTableProps, MRT_RowData, MRT_VisibilityState, MRT_ColumnFiltersState, MRT_SortingState, MRT_GroupingState, MRT_PaginationState, MRT_ColumnDef, useMaterialReactTable } from "material-react-table";
 import { SmartReportMRT } from "../smart_report_mrt";
 import { SmartTableSettings } from "../smart_drawer";
-import { useState, useMemo } from "react";
-import { OnChangeFn, Updater } from "@tanstack/react-table";
 import { SmartTableSettingsProps } from "../smart_drawer/smart_table_settings";
 import { Box, Stack } from "@mui/material";
 

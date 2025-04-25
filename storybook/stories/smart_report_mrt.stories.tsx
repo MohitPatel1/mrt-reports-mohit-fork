@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { SmartReportMRT } from "./smart_report_mrt";
+import { SmartReportMRT } from "@teziapp/smartreport";
 
 const meta = {
   title: "Example/SmartReportMRT",
