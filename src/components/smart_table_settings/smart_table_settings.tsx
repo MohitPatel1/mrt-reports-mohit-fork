@@ -28,7 +28,6 @@ export type SmartTableSettings = {
 }
 export interface SmartTableSettingsProps<TData extends MRT_RowData> {
   tableSettings?: SmartTableSettings;
-  table?: MRT_TableInstance<TData>; // Make table optional since we can get it from context
 }
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -58,15 +57,13 @@ const StyledAppBar = styled(AppBar, {
 
 export const SmartTableSettings = <TData extends MRT_RowData>({
   tableSettings,
-  table: tableProp
 }: SmartTableSettingsProps<TData>): JSX.Element => {
   const { position = 'left-drawer' } = tableSettings || {};
   const [open, setOpen] = useState(false);
   const [activePanel, setActivePanel] = useState<string | null>(null);
 
   // Use provided table or get from context
-  const contextTable = useTableContext<TData>();
-  const table = tableProp || contextTable;
+  const table = useTableContext<TData>();
 
   const handleDrawerOpen = () => {
     setOpen(true);
