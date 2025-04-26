@@ -34,7 +34,7 @@ export const TableContextProvider = <T extends MRT_RowData>({
     });
     
     return (
-        <SmartMRTContext.Provider value={tableInstance}>
+        <SmartMRTContext.Provider value={{...tableInstance}}>
             {children}
         </SmartMRTContext.Provider>
     );
